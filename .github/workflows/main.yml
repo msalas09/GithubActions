@@ -120,11 +120,11 @@ jobs:
             - name: 'Populate auth file with SFDX_URL secret of integration org'
               shell: bash
               run: |
-                  echo ${{ toJson(secrets.SFDX_INTEGRATION_URL) }} > ./SFDX_INTEGRATION_URL.json
+                  echo ${{ secrets.SFDX_INTEGRATION_URL }} > ./SFDX_INTEGRATION_URL.txt
 
             # Authenticate to org using the URL stored in the text file
             - name: 'Authenticate to Integration Org'
-              run: sfdx auth:sfdxurl:store -f --json ./SFDX_INTEGRATION_URL.json -s -a integration
+              run: sfdx auth:sfdxurl:store -f ./SFDX_INTEGRATION_URL.txt -s -a integration
               #run: sfdx force:auth:web:login -a githubAction -r https://lwcudemycom2-dev-ed.my.salesforce.com
 
             # We use SFDX Git Delta to create a directory with only the metadata that has changed.
