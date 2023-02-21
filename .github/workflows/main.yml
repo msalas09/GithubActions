@@ -33,8 +33,6 @@ jobs:
         
         if: ${{ github.actor != 'dependabot[bot]' }}
         steps:
-            - name: 'Print Variables'
-            run: echo "$TESTING_VARIABLE"
             # Now we install nodejs in the VM, and specify version 14
             - uses: actions/setup-node@v3
               with:
@@ -71,7 +69,8 @@ jobs:
 
             # Once a developer has specified a list of classes to run, we need to be able
             # to extract this information from the PR, and pass it on the the VM.
-                  
+            - name: 'Print Variables'
+              run: echo "$TESTING_VARIABLE"
             # Now Install Salesforce CLI
             - name: 'Install Salesforce CLI'
               run: |
