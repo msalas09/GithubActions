@@ -88,6 +88,11 @@ jobs:
               run: | 
                   echo y | sfdx plugins:install sfdx-git-delta@5.10.2
                   sfdx plugins 
+            
+            - name: 'Installing sfdx auth plugin'
+              run: | 
+                  echo y | sfdx plugins:install auth
+                  sfdx plugins
 
             # Install java as it is required for the next step
             - name: 'Installing java'
