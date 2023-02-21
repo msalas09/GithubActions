@@ -33,8 +33,8 @@ jobs:
         
         if: ${{ github.actor != 'dependabot[bot]' }}
         steps:
-            - name: List of the GitHub Actions environment variables on Windows
-            run: env
+            - name: 'Print Variables'
+            run: echo "$TESTING_VARIABLE"
             # Now we install nodejs in the VM, and specify version 14
             - uses: actions/setup-node@v3
               with:
