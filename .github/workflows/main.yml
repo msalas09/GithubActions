@@ -33,6 +33,8 @@ jobs:
         
         if: ${{ github.actor != 'dependabot[bot]' }}
         steps:
+            - name: List of the GitHub Actions environment variables on Windows
+            run: env
             # Now we install nodejs in the VM, and specify version 14
             - uses: actions/setup-node@v3
               with:
@@ -119,8 +121,8 @@ jobs:
 
             # Authenticate to org using the URL stored in the text file
             - name: 'Authenticate to Integration Org'
-              #run: sfdx auth:sfdxurl:store -f ./SFDX_INTEGRATION_URL.txt -s -a integration
-              run: sfdx force:auth:web:login -a githubAction -r https://lwcudemycom2-dev-ed.my.salesforce.com
+              run: sfdx auth:sfdxurl:store -f ./SFDX_INTEGRATION_URL.txt -s -a integration
+              #run: sfdx force:auth:web:login -a githubAction -r https://lwcudemycom2-dev-ed.my.salesforce.com
 
             # We use SFDX Git Delta to create a directory with only the metadata that has changed.
             # this allows us to deploy only those changes, as opposed to deploying the entire branch. 
