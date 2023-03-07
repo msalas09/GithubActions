@@ -85,7 +85,7 @@ jobs:
 
             - name: 'Installing sfdx git delta'
               run: | 
-                  echo y | sfdx plugins:install sfdx-git-delta@5.10.2
+                  echo y | sfdx plugins:install sfdx-git-delta
                   sfdx plugins 
             
             - name: 'Installing sfdx auth plugin'
@@ -131,7 +131,7 @@ jobs:
             - name: 'Create delta packages for new, modified or deleted metadata'
               run: | 
                   mkdir changed-sources
-                  sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output changed-sources/ --generate-delta --source force-app/ 
+                  sfdx sgd:source:delta --to "HEAD" --from "origin/development" --output changed-sources/ --generate-delta --source force-app/ 
 
             # Now we can use the sfdx scanner to scan the code in the delta directory
             # The output of the scan is stored in a file called apexScanResults.sarif
