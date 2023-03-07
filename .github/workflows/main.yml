@@ -29,7 +29,6 @@ jobs:
         # In this case, we are going to run our commands on the latest version
         # of ubuntu
         runs-on: ubuntu-latest
-        timeout-minutes: 30
         
         if: ${{ github.actor != 'dependabot[bot]' }}
         steps:
