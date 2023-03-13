@@ -29,7 +29,6 @@ jobs:
         # In this case, we are going to run our commands on the latest version
         # of ubuntu
         runs-on: ubuntu-latest
-        timeout-minutes: 30
         
         if: ${{ github.actor != 'dependabot[bot]' }}
         steps:
@@ -69,7 +68,7 @@ jobs:
 
             # Once a developer has specified a list of classes to run, we need to be able
             # to extract this information from the PR, and pass it on the the VM.
-                  
+            
             # Now Install Salesforce CLI
             - name: 'Install Salesforce CLI'
               run: |
@@ -86,8 +85,13 @@ jobs:
 
             - name: 'Installing sfdx git delta'
               run: | 
-                  echo y | sfdx plugins:install sfdx-git-delta@5.10.2
+                  echo y | sfdx plugins:install sfdx-git-delta
                   sfdx plugins 
+            
+            - name: 'Installing sfdx auth plugin'
+              run: | 
+                  echo y | sfdx plugins:install auth
+                  sfdx plugins
 
             # Install java as it is required for the next step
             - name: 'Installing java'
@@ -111,15 +115,15 @@ jobs:
             # connected apps or any else. 
 
             # The URL is stored in the Github Secret named SFDX_INTEGRATION_URL
-            # so here we store the URL into a text file
+            # so here we store the URL into a text file 
             - name: 'Populate auth file with SFDX_URL secret of integration org'
-              shell: bash
               run: |
-                  echo ${{ secrets.SFDX_INTEGRATION_URL}} > ./SFDX_INTEGRATION_URL.txt
+                  echo ${{ secrets.SFDX_INTEGRATION_URL }} > ./SFDX_INTEGRATION_URL.txt
 
             # Authenticate to org using the URL stored in the text file
             - name: 'Authenticate to Integration Org'
               run: sfdx auth:sfdxurl:store -f ./SFDX_INTEGRATION_URL.txt -s -a integration
+              #run: sfdx force:auth:web:login -a githubAction -r https://lwcudemycom2-dev-ed.my.salesforce.com
 
             # We use SFDX Git Delta to create a directory with only the metadata that has changed.
             # this allows us to deploy only those changes, as opposed to deploying the entire branch. 
@@ -127,7 +131,7 @@ jobs:
             - name: 'Create delta packages for new, modified or deleted metadata'
               run: | 
                   mkdir changed-sources
-                  sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output changed-sources/ --generate-delta --source force-app/ 
+                  sfdx sgd:source:delta --to "HEAD" --from "origin/development" --output changed-sources/ --generate-delta --source force-app/ 
 
             # Now we can use the sfdx scanner to scan the code in the delta directory
             # The output of the scan is stored in a file called apexScanResults.sarif
@@ -143,7 +147,7 @@ jobs:
 
             # Now we upload the .sarif file as explained in the previous step
             - name: Upload SARIF file
-              uses: github/codeql-action/upload-sarif@v1
+              uses: github/codeql-action/upload-sarif@v2
               with:
                 sarif_file: changed-sources/apexScanResults.sarif
 
@@ -155,7 +159,7 @@ jobs:
               if: ${{ env.APEX_TESTS != 'all' }}
               run: |
                   echo ${{env.APEX_TESTS}}
-                  sfdx force:source:deploy -p "changed-sources/force-app" --checkonly --testlevel RunSpecifiedTests --runtests ${{env.APEX_TESTS}} --json
+                  sfdx force:source:deploy -p "changed-sources/force-app" --checkonly --json
 
             # If the env variable equals all, we run all tests
             - name: 'Check-only deploy delta changes - run all tests'
