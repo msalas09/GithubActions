@@ -132,7 +132,7 @@ jobs:
               if: ${{ env.APEX_TESTS != 'all' }}
               run: |
                   echo ${{env.APEX_TESTS}}
-                  sfdx force:source:deploy -p "changed-sources/force-app" --json
+                  sfdx force:source:deploy -c --sourcepath changed-sources/force-app/ -l RunLocalTests --apiversion 56.0 -g
 
             # If the env variable equals all, we run all tests
             - name: 'Check-only deploy delta changes - run all tests'
