@@ -159,13 +159,15 @@ jobs:
               if: ${{ env.APEX_TESTS != 'all' }}
               run: |
                   echo ${{env.APEX_TESTS}}
-                  sfdx force:source:deploy -p "changed-sources/force-app" --json
+                  sfdx force:source:deploy -c --sourcepath changed-sources/force-app -l RunLocalTests --apiversion 56.0 -g
+                  # sfdx force:source:deploy -p "changed-sources/force-app" --json
 
             # If the env variable equals all, we run all tests
             - name: 'Check-only deploy delta changes - run all tests'
               if: ${{ env.APEX_TESTS == 'all' }}
               run: |
-                  sfdx force:source:deploy -p "changed-sources/force-app" --checkonly --testlevel RunLocalTests  --json
+                   sfdx force:source:deploy -c --sourcepath changed-sources/force-app -l RunLocalTests --apiversion 56.0 -g
+              #    sfdx force:source:deploy -p "changed-sources/force-app" --checkonly --testlevel RunLocalTests  --json
 
             - name: 'Deploy destructive changes (if any)'
               run: sfdx force:mdapi:deploy -d "changed-sources/destructiveChanges" --checkonly --ignorewarnings 
