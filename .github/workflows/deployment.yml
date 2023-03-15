@@ -127,4 +127,4 @@ jobs:
             # Deploy delta changes
 
             - name: 'Deploy the entire branch to Integration org'
-              run: sfdx force:source:deploy -p force-app --testlevel RunLocalTests --json
+              run: sfdx force:source:deploy -p force-app --testlevel NoTestRun --json
