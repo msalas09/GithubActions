@@ -43,10 +43,6 @@
                 <behavior>Edit</behavior>
                 <field>Testing_Actions__c</field>
             </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Test_Page_Layout__c</field>
-            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
