@@ -3,8 +3,8 @@
     <fullName>Testing_Actions__c</fullName>
     <externalId>false</externalId>
     <label>Testing Actions</label>
-    <length>95</length>
-    <required>false</required>
+    <length>100</length>
+    <required>true</required>
     <trackFeedHistory>false</trackFeedHistory>
     <type>Text</type>
     <unique>false</unique>
